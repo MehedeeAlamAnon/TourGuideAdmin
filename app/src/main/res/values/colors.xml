@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#5a65a0</color>
+    <color name="colorPrimaryDark">#303f9f</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <!-- Primary color of the app (shown in the app bar) -->
+    <color name="primary_color">#00bcd4</color>
+
+    <!-- Primary dark color of the app (shown in the status bar) -->
+    <color name="primary_dark_color">#0097A7</color>
+
+    <!-- Background color for app -->
+    <color name="tan_background">#FFFFFF</color>
+
+    <!-- Background color for the hotel category -->
+    <color name="category_hotel">#f57c00</color>
+
+    <!-- Background color for the hotel category -->
+    <color name="category_cafes">#388e3c</color>
+
+    <!-- Background color for the hotel category -->
+    <color name="category_fam_attract">#455A64</color>
+
+    <!-- Background color for the hotel category -->
+    <color name="category_museums">#303f9f</color>
+
+    <!-- Background color for the hotel category -->
+    <color name="category_theaters">#d32f2f</color>
+
+    <!-- Background color for the hotel category -->
+    <color name="category_catacombs">#616161</color>
+    <!--#16AFCA-->
+
+    <color name="upload_button">#5E934A</color>
+</resources>

@@ -1,0 +1,239 @@
+package com.example.anon.user;
+
+import android.app.ProgressDialog;
+import android.content.ContentResolver;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.os.Bundle;
+import android.provider.MediaStore;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.webkit.MimeTypeMap;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.Spinner;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
+/**
+ * Created by Anon on 03-Feb-18.
+ */
+
+public class AddPlaceActivity extends AppCompatActivity{
+
+    ImageView imageView;
+    EditText name,description,address,openTime,phone,website;
+    Spinner spinnerCategory;
+
+    private StorageReference storageReference;
+    private DatabaseReference databaseReference;
+
+    public static final String STORAGE_PATH= "images/";
+    public static final String DATABASE_PATH_CAFE="cafes";
+    public static final String DATABASE_PATH_HOTEL="hotels";
+    public static final String DATABASE_PATH_FAMOUS_ATTRACTION="famous_attractions";
+    public static final String DATABASE_PATH_MUSEUM="museums";
+    public static final String DATABASE_PATH_HOSPITAL="hospitals";
+    private Uri imageUri;
+    String INTENT_CATEGORY;
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.place_info_category);
+
+        imageView=(ImageView)findViewById(R.id.insertImages);
+        spinnerCategory=(Spinner)findViewById(R.id.spinnerCategory);
+        name=(EditText)findViewById(R.id.insertName);
+        description=(EditText)findViewById(R.id.insertDescription);
+        address=(EditText)findViewById(R.id.insertAddress);
+        openTime=(EditText)findViewById(R.id.insertOpenTime);
+        phone=(EditText)findViewById(R.id.insertPhone);
+        website=(EditText)findViewById(R.id.insertWebsite);
+
+
+        storageReference= FirebaseStorage.getInstance().getReference();
+        //databaseReference= FirebaseDatabase.getInstance().getReference(DATABASE_PATH_CAFE);
+    }
+
+    public void browseImages(View view){
+
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent,"Select Image"),0);
+
+
+    }
+
+    protected void onActivityResult(int requetCode, int resultCode, Intent data){
+        super.onActivityResult(requetCode, resultCode, data);
+        if(requetCode ==0 && resultCode== RESULT_OK){
+
+            imageUri=data.getData();
+            try{
+                Bitmap bitmap= MediaStore.Images.Media.getBitmap(getContentResolver(),imageUri);
+                imageView.setImageBitmap(bitmap);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+    public String getActualImage(Uri uri){
+
+        ContentResolver contentResolver= getContentResolver();
+        MimeTypeMap mimeTypeMap=MimeTypeMap.getSingleton();
+        return mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri));
+    }
+
+    public void uploadData(View view){
+
+        if(imageUri!=null){
+
+            //insert data
+            final ProgressDialog progressDialog = new ProgressDialog(this);
+            progressDialog.setTitle("Uploading");
+            progressDialog.show();
+
+            StorageReference reference=storageReference.child(STORAGE_PATH+ System.currentTimeMillis()+ "."+ getActualImage(imageUri));
+            reference.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                    String CATEGORY=spinnerCategory.getSelectedItem().toString();
+                    INTENT_CATEGORY=CATEGORY;
+
+                    if(CATEGORY.equals("Cafe")){
+                        databaseReference= FirebaseDatabase.getInstance().getReference(DATABASE_PATH_CAFE);
+                    }
+                    else if(CATEGORY.equals("Hotel")){
+                        databaseReference= FirebaseDatabase.getInstance().getReference(DATABASE_PATH_HOTEL);
+                    }
+
+                    else if(CATEGORY.equals("Tourist Attraction")){
+                        databaseReference= FirebaseDatabase.getInstance().getReference(DATABASE_PATH_FAMOUS_ATTRACTION);
+                    }
+
+                    else if(CATEGORY.equals("Museum")){
+                        databaseReference= FirebaseDatabase.getInstance().getReference(DATABASE_PATH_MUSEUM);
+                    }
+
+                    else if(CATEGORY.equals("Hospital")){
+                        databaseReference= FirebaseDatabase.getInstance().getReference(DATABASE_PATH_HOSPITAL);
+                    }
+                    String NAME= name.getText().toString();
+                    String DESCRIPTION= description.getText().toString();
+                    String ADDRESS= address.getText().toString();
+                    String OPENTIME= openTime.getText().toString();
+                    String PHONE= phone.getText().toString();
+                    String WEBSITE= website.getText().toString();
+                    String ID= databaseReference.push().getKey();
+                    //Person person =new Person(NAME,EMAIL,taskSnapshot.getDownloadUrl().toString());
+                    Place place =new Place(ID,NAME,DESCRIPTION,ADDRESS,OPENTIME,PHONE,WEBSITE,taskSnapshot.getDownloadUrl().toString());
+
+
+
+                    databaseReference.child(ID).setValue(place);
+
+                    progressDialog.dismiss();
+                    Toast.makeText(getApplicationContext(),"DATA UPLOADED",Toast.LENGTH_LONG).show();
+
+
+                }
+            })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+
+                            progressDialog.dismiss();
+                            Toast.makeText(getApplicationContext(),e.getMessage(),Toast.LENGTH_LONG).show();
+
+                        }
+                    })
+
+                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                        @SuppressWarnings("VisibleForTests")
+                        @Override
+                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+
+                            double totalProgess= (100*taskSnapshot.getBytesTransferred())/taskSnapshot.getTotalByteCount();
+                            progressDialog.setMessage("Uploaded %" + (int)totalProgess);
+
+
+                        }
+                    });
+
+
+        } else{
+
+            //Show message
+            Toast.makeText(getApplicationContext(), "Please select data first", Toast.LENGTH_LONG).show();
+
+        }
+
+
+    }
+
+
+
+
+    public void viewAllData(View view){
+
+        if(INTENT_CATEGORY.equals("Cafe")){
+
+            Intent intent = new Intent(AddPlaceActivity.this,CafeActivity.class);
+            startActivity(intent);
+
+        }
+        else if(INTENT_CATEGORY.equals("Hotel")){
+
+            Intent intent = new Intent(AddPlaceActivity.this,HotelActivity.class);
+            startActivity(intent);
+
+        }
+
+        else if(INTENT_CATEGORY.equals("Tourist Attraction")){
+
+            Intent intent = new Intent(AddPlaceActivity.this,FamousAttractionActivity.class);
+            startActivity(intent);
+
+        }
+
+        else if(INTENT_CATEGORY.equals("Museum")){
+
+            Intent intent = new Intent(AddPlaceActivity.this,MuseumActivity.class);
+            startActivity(intent);
+
+        }
+
+        else if(INTENT_CATEGORY.equals("Hospital")){
+
+            Intent intent = new Intent(AddPlaceActivity.this,HospitalActivity.class);
+            startActivity(intent);
+
+        }
+
+
+
+    }
+}
+
+

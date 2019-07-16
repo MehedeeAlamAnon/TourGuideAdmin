@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/shape"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/textViewName"
+        style="@style/locationTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+        android:textColor="#FFFFFF" />
+
+    <TextView
+        android:id="@+id/textViewDescription"
+        style="@style/locationDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/textViewAddress"
+        style="@style/locationAddressSchedulePricePhone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/ic_add_location_black_24dp"
+        android:text="TextView"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/textViewOpenTime"
+        style="@style/locationAddressSchedulePricePhone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/ic_schedule_black_24dp"
+        android:text="TextView"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/textViewPhone"
+        style="@style/locationAddressSchedulePricePhone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/ic_phone_black_24dp"
+        android:text="TextView"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/textViewWebsite"
+        style="@style/locationAddressSchedulePricePhone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/ic_site_black_24px"
+        android:text="TextView"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"/>
+</LinearLayout>

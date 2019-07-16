@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">Admin Side</string>
+
+    <string name="category_cafes">Cafes</string>
+
+    <string name="category_hotel">Hotels</string>
+
+    <string name="category_museums">Museuems</string>
+
+    <array name="category">
+        <item>Select Category Of the Place</item>
+        <item>Cafe</item>
+        <item>Hotel</item>
+        <item>Tourist Attraction</item>
+        <item>Museum</item>
+        <item>Hospital</item>
+    </array>
+
+
+</resources>

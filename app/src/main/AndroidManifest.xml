@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.anon.user">
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+
+        <activity
+            android:name=".AddPlaceActivity"
+            />
+
+        <activity
+            android:name=".AddCafeActivity"
+            />
+
+
+        <activity
+        android:name=".AddHotelActivity"
+        />
+
+        <activity
+            android:name=".AddFamousAttractionActivity"
+            />
+
+        <activity
+            android:name=".AddMuseumActivity"
+            />
+
+        <activity
+            android:name=".AddHospitalActivity"
+            />
+
+
+        <activity
+            android:name=".CafeActivity"
+            />
+
+
+        <activity
+            android:name=".HotelActivity"
+            />
+
+        <activity
+            android:name=".FamousAttractionActivity"
+            />
+
+        <activity
+            android:name=".MuseumActivity"
+            />
+
+        <activity
+            android:name=".HospitalActivity"
+            />
+
+
+
+        <activity
+            android:name=".UpdateCafe"
+            />
+
+        <activity
+            android:name=".UpdateCafeActivity"
+            />
+
+
+        <activity
+            android:name=".UpdateHotel"
+            />
+
+        <activity
+            android:name=".UpdateHotelActivity"
+            />
+
+
+
+        <activity
+            android:name=".UpdateFamousAttraction"
+            />
+
+        <activity
+            android:name=".UpdateFamousAttractionActivity"
+            />
+
+
+        <activity
+            android:name=".UpdateMuseum"
+            />
+
+        <activity
+            android:name=".UpdateMuseumActivity"
+            />
+
+        <activity
+            android:name=".UpdateHospital"
+            />
+
+        <activity
+            android:name=".UpdateHospitalActivity"
+            />
+
+
+    </application>
+
+</manifest>
